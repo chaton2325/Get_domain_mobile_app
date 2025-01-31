@@ -1,74 +1,161 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import React, { useState } from "react";
+import { View, Text, TextInput, TouchableOpacity, Linking, StyleSheet, Image } from "react-native";
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+const DomainSearch: React.FC = () => {
+  const [domain, setDomain] = useState("");
+  const [searchedDomain, setSearchedDomain] = useState("");
 
-export default function HomeScreen() {
+  const handleSearch = () => {
+    setSearchedDomain(domain);
+  };
+
+  const handleBuy = () => {
+    const promoCode = "MONPROMO";
+    const url = `https://www.lws.fr/achat-domaine.php?domain=${searchedDomain}&promo=${promoCode}`;
+    Linking.openURL(url);
+  };
+  const handleDonate = () => {
+    const donateUrl = "https://www.paypal.com/donate"; 
+    Linking.openURL(donateUrl);
+  };
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12'
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <View style={styles.container}>
+      <Image source={require("../../assets/images/domain.png")} style={styles.logo} />
+      <Text style={styles.title}>Recherche de Nom de Domaine</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Entrez un nom de domaine"
+        placeholderTextColor="#864AF9"
+        value={domain}
+        onChangeText={setDomain}
+      />
+      <TouchableOpacity style={styles.button} onPress={handleSearch}>
+        <Text style={styles.buttonText}>Rechercher</Text>
+      </TouchableOpacity>
+
+      {searchedDomain !== "" && (
+        <View style={styles.resultContainer}>
+          <Text style={styles.resultText}>Résultat: {searchedDomain}</Text>
+          <TouchableOpacity style={styles.buyButton} onPress={handleBuy}>
+            <Text style={styles.buttonText}>Acheter sur LWS</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
+      <TouchableOpacity style={styles.donateButton} onPress={handleDonate}>
+        <Text style={styles.buttonText}>Faire un Don</Text>
+      </TouchableOpacity>
+
+      <Text style={styles.footerText}>Communauté Digitale du Cameroun</Text>
+    </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: {
+    flex: 1,
+    backgroundColor: "#FFF9EB",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 20,
+
+
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  logo: {
+    width: 100,
+    height: 100,
+    marginBottom: 20,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#864AF9",
+    marginBottom: 20,
+  },
+  input: {
+    width: "100%",
+    borderWidth: 2,
+    borderColor: "#864AF9",
+    borderRadius: 15,
+    padding: 12,
+    marginBottom: 15,
+    fontSize: 18,
+    color: "#864AF9",
+    backgroundColor: "#FFF",
+    elevation: 3,
+
+
+  },
+  button: {
+    backgroundColor: "#864AF9",
+    padding: 14,
+    borderRadius: 15,
+    alignItems: "center",
+    width: "100%",
+    marginBottom: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  buyButton: {
+    backgroundColor: "#864AF9",
+    padding: 14,
+    borderRadius: 15,
+    alignItems: "center",
+    width: "100%",
+    marginTop: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  donateButton: {
+    backgroundColor: "#864AF9",
+    padding: 14,
+    borderRadius: 15,
+    alignItems: "center",
+    width: "100%",
+    marginTop: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5,
+    
+  },
+  buttonText: {
+    color: "#FFFFFF",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  resultContainer: {
+    marginTop: 20,
+    alignItems: "center",
+    width: "100%",
+    backgroundColor: "#FFF",
+    padding: 15,
+    borderRadius: 15,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  resultText: {
+    fontSize: 20,
+    color: "#864AF9",
+    fontWeight: "bold",
+  },
+  footerText: {
+    marginTop: 30,
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#864AF9",
   },
 });
+
+export default DomainSearch;
