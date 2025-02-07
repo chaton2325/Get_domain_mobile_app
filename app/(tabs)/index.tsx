@@ -1,21 +1,23 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, Linking, StyleSheet, Image } from "react-native";
+import checkDomainAvailability from "../../verifydomain";
 
 const DomainSearch: React.FC = () => {
   const [domain, setDomain] = useState("");
   const [searchedDomain, setSearchedDomain] = useState("");
 
   const handleSearch = () => {
-    setSearchedDomain(domain);
+    const varz = checkDomainAvailability(domain);
+    console.log(varz);
   };
 
   const handleBuy = () => {
-    const promoCode = "MONPROMO";
-    const url = `https://www.lws.fr/achat-domaine.php?domain=${searchedDomain}&promo=${promoCode}`;
+    const promoCode = "";
+    const url = ``;
     Linking.openURL(url);
   };
   const handleDonate = () => {
-    const donateUrl = "https://www.paypal.com/donate"; 
+    const donateUrl = ""; 
     Linking.openURL(donateUrl);
   };
 
